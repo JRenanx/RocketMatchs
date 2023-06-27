@@ -21,10 +21,13 @@ public class Season {
     @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "temporada")
+    @Column(name = "id_temporada")
     private Integer id;
+    
+    @Column(name = "descricao_temporada")
+    private String description;
 
-    @Column(name = "temporada")
+    @Column(name = "ano_temporada")
     private Integer year;
 
 }

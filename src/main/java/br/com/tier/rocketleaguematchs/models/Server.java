@@ -1,13 +1,11 @@
 package br.com.tier.rocketleaguematchs.models;
 
-import java.time.ZonedDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -19,26 +17,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Entity(name = "partida")
-public class Match {
-    
+@Entity(name = "servidor")
+public class Server {
+
     @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_partida")
+    @Column(name = "id_server")
     private Integer id;
-    
-    @Column(name = "data_partida")
-    private ZonedDateTime date;
-    
-    
+
+    @NotBlank
     @NotNull
-    @ManyToOne
-    private Map map;
-    
-    @NotNull
-    @ManyToOne
-    private Season sesaon;
+    @Column(name = "nome_server", unique = true)
+    private String server;
 
 }
-

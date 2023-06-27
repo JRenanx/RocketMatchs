@@ -5,6 +5,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,9 +27,14 @@ public class Map {
     @Column(name = "id_mapa")
     private Integer id;
     
-    @Column(name = "tipo_mapa")
-    private String map;
+    @NotBlank
+    @NotNull
+    @Column(name = "nome_mapa", unique = true)
+    private String name;
     
-    private Integer time;
+    @ManyToOne
+    private Server server;
+
+
 
 }
