@@ -5,9 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,26 +14,17 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of ="id")
-@Entity(name = "jogador_partida")
-public class MatchPlayer {
-
+@EqualsAndHashCode(of = "id")
+@Entity(name = "team")
+public class Team {
     @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_JogadorPartida")
+    @Column(name = "id_team")
     private Integer id;
-    
-    @NotNull
-    @NotBlank
-    @Column(name = "gols_JogadorPartida")
-    private Integer goal;
-    
-    @ManyToOne
-    private Player player;
-    
-    @ManyToOne
-    private Match match;
-    
+
+
+    @Column(name = "name_team", unique = true)
+    private String name;
     
 }

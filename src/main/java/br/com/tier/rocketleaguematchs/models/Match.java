@@ -8,7 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,26 +18,26 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Entity(name = "partida")
+@Entity(name = "match")
 public class Match {
     
     @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_partida")
+    @Column(name = "id_match")
     private Integer id;
     
-    @Column(name = "data_partida")
+    @Column(name = "date_match")
     private ZonedDateTime date;
     
     
-    @NotNull
+ 
     @ManyToOne
     private Map map;
     
-    @NotNull
+
     @ManyToOne
-    private Season sesaon;
+    private Season season;
 
 }
 

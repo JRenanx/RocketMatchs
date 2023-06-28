@@ -5,8 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,17 +15,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Entity(name = "mapa")
-public class Car {
+@Entity(name = "country")
+public class Country {
+
     @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_carro")
+    @Column(name = "id_country")
     private Integer id;
 
-    @NotBlank
-    @NotNull
-    @Column(name = "nome_carro", unique = true)
+
+    @Column(name = "name_country", unique = true)
     private String name;
-    
+
 }

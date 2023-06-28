@@ -14,9 +14,11 @@ public interface SeasonService {
 
     void delete(Integer id);
 
+    List<Season> listAll();
+
     List<Season> findByYear(Integer year);
 
     List<Season> findByYearBetween(Integer start, Integer end);
 
-    List<Season> findByYearBetweenAndDescription(Integer firstYear, Integer lastYear, String description);
+    List<Season> findByYearBetweenAndDescription(Integer start, Integer end, String description);
 }

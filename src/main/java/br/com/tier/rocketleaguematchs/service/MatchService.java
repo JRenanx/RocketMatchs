@@ -1,6 +1,5 @@
 package br.com.tier.rocketleaguematchs.service;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 
 import br.com.tier.rocketleaguematchs.models.Map;
@@ -19,11 +18,12 @@ public interface MatchService {
 
     List<Match> listAll();
 
-    List<Match> findByDateBetween(ZonedDateTime dateIn, ZonedDateTime dateFin);
+    List<Match> findByDate(String date);
 
-    List<Match> findByDate(ZonedDateTime date);
+    List<Match> findByDateBetween(String dateIn, String dateFin);
 
     List<Match> findByMapOrderByDate(Map map);
 
     List<Match> findBySeasonOrderByDate(Season Season);
+
 }

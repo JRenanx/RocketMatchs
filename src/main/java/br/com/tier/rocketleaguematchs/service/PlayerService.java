@@ -2,9 +2,9 @@ package br.com.tier.rocketleaguematchs.service;
 
 import java.util.List;
 
-import br.com.tier.rocketleaguematchs.models.Car;
+import br.com.tier.rocketleaguematchs.models.Country;
 import br.com.tier.rocketleaguematchs.models.Player;
-import br.com.tier.rocketleaguematchs.models.Server;
+import br.com.tier.rocketleaguematchs.models.Team;
 
 public interface PlayerService {
 
@@ -18,7 +18,10 @@ public interface PlayerService {
 
     List<Player> listAll();
 
-    List<Player> findByCarOrderByName(Car car);
+    List<Player> findByNameStartsWithIgnoreCase(String name);
 
-    List<Player> findByServerOrderByName(Server server);
+    List<Player> findByTeamOrderByName(Team Team);
+
+    List<Player> findByCountryOrderByName(Country country);
+
 }

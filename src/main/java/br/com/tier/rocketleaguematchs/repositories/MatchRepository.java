@@ -20,4 +20,5 @@ public interface MatchRepository extends JpaRepository<Match, Integer>{
     List<Match> findByMapOrderByDate(Map map);
 
     List<Match> findBySeasonOrderByDate(Season Season);
+
 }

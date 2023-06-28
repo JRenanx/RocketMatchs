@@ -6,8 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,22 +16,20 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Entity(name = "mapa")
+@Entity(name = "map")
 public class Map {
 
     @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_mapa")
+    @Column(name = "id_map")
     private Integer id;
-    
-    @NotBlank
-    @NotNull
-    @Column(name = "nome_mapa", unique = true)
+
+    @Column(name = "name_map", unique = true)
     private String name;
     
     @ManyToOne
-    private Server server;
+    private Country country;
 
 
 

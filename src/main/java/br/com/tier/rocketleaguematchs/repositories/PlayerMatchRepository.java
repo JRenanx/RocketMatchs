@@ -6,14 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.com.tier.rocketleaguematchs.models.Match;
-import br.com.tier.rocketleaguematchs.models.MatchPlayer;
 import br.com.tier.rocketleaguematchs.models.Player;
+import br.com.tier.rocketleaguematchs.models.PlayerMatch;
 
 @Repository
-public interface MatchPlayerRepository extends JpaRepository<MatchPlayer, Integer> {
+public interface PlayerMatchRepository extends JpaRepository<PlayerMatch, Integer> {
 
-    List<MatchPlayer> findByPlayerOrderByGoals (Player player);
+    List<PlayerMatch> findByPlayerOrderByGoals (Player player);
     
-    List<MatchPlayer> findByMatchOrderByGoals(Match match);
+    List<PlayerMatch> findByMatchOrderByGoals(Match match);
     
 }
