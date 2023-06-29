@@ -1,5 +1,7 @@
 package br.com.tier.rocketleaguematchs.models;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,6 +30,7 @@ public class Map {
     @Column(name = "name_map", unique = true)
     private String name;
     
+    @NotBlank
     @ManyToOne
     private Country country;
 

@@ -1,5 +1,7 @@
 package br.com.tier.rocketleaguematchs.models;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import br.com.tier.rocketleaguematchs.models.dto.PlayerMatchDTO;
 import br.com.tier.rocketleaguematchs.utils.DateUtils;
 import jakarta.persistence.Column;
@@ -27,13 +29,14 @@ public class PlayerMatch {
     @Column(name = "id_playermatch")
     private Integer id;
 
-
     @Column(name = "goals_playermatch")
     private Integer goals;
 
+    @NotBlank
     @ManyToOne
     private Player player;
 
+    @NotBlank
     @ManyToOne
     private Match match;
 

@@ -2,7 +2,6 @@ package br.com.tier.rocketleaguematchs.service;
 
 import java.util.List;
 
-import br.com.tier.rocketleaguematchs.models.Map;
 import br.com.tier.rocketleaguematchs.models.Match;
 import br.com.tier.rocketleaguematchs.models.Season;
 
@@ -22,8 +21,9 @@ public interface MatchService {
 
     List<Match> findByDateBetween(String dateIn, String dateFin);
 
-    List<Match> findByMapOrderByDate(Map map);
+    List<Match> findBySeasonOderByDate(Season season);
 
-    List<Match> findBySeasonOrderByDate(Season Season);
+
+
 
 }

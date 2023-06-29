@@ -12,7 +12,6 @@ import br.com.tier.rocketleaguematchs.models.Team;
 @Repository
 public interface PlayerRepository extends JpaRepository<Player, Integer> {
 
-
     List<Player> findByNameStartsWithIgnoreCase(String name);
 
     List<Player> findByTeamOrderByName(Team team);

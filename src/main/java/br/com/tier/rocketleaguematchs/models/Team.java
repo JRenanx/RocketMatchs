@@ -17,14 +17,14 @@ import lombok.Setter;
 @EqualsAndHashCode(of = "id")
 @Entity(name = "team")
 public class Team {
+    
     @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id_team")
     private Integer id;
 
-
     @Column(name = "name_team", unique = true)
     private String name;
-    
+
 }

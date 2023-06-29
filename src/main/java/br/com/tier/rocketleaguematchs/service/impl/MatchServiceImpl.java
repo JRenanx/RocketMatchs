@@ -11,8 +11,8 @@ import br.com.tier.rocketleaguematchs.models.Match;
 import br.com.tier.rocketleaguematchs.models.Season;
 import br.com.tier.rocketleaguematchs.repositories.MatchRepository;
 import br.com.tier.rocketleaguematchs.service.MatchService;
+import br.com.tier.rocketleaguematchs.service.exception.ObjectNotFound;
 import br.com.tier.rocketleaguematchs.utils.DateUtils;
-import br.com.trier.springvespertino.service.exception.ObjectNotFound;
 
 @Service
 public class MatchServiceImpl implements MatchService {
@@ -77,15 +77,7 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public List<Match> findByMapOrderByDate(Map map) {
-        List<Match> lista = repository.findByMapOrderByDate(map);
-        if (lista.isEmpty()) {
-            throw new ObjectNotFound("Nenhuma partida cadastrada no mapa %s".formatted(map.getName()));
-        }
-        return lista;
-    }
-
-    public List<Match> findBySeasonOrderByDate(Season season) {
+    public List<Match> findBySeasonOderByDate(Season season) {
         List<Match> lista = repository.findBySeasonOrderByDate(season);
         if (lista.isEmpty()) {
             throw new ObjectNotFound("Nenhuma partida cadastrada na temporada %s".formatted(season.getDescription()));

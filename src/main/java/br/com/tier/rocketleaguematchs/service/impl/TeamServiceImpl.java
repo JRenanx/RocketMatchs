@@ -9,7 +9,7 @@ import br.com.tier.rocketleaguematchs.models.Team;
 import br.com.tier.rocketleaguematchs.repositories.TeamRepository;
 import br.com.tier.rocketleaguematchs.service.TeamService;
 import br.com.tier.rocketleaguematchs.service.exception.IntegrityViolation;
-import br.com.trier.springvespertino.service.exception.ObjectNotFound;
+import br.com.tier.rocketleaguematchs.service.exception.ObjectNotFound;
 
 @Service
 public class TeamServiceImpl implements TeamService {

@@ -20,5 +20,6 @@ public interface SeasonService {
 
     List<Season> findByYearBetween(Integer start, Integer end);
 
-    List<Season> findByYearBetweenAndDescription(Integer start, Integer end, String description);
+    List<Season> findByDescriptionContaining(String description);
+
 }

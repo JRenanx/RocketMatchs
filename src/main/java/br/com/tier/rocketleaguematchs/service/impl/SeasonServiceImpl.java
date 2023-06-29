@@ -10,7 +10,7 @@ import br.com.tier.rocketleaguematchs.models.Season;
 import br.com.tier.rocketleaguematchs.repositories.SeasonRepository;
 import br.com.tier.rocketleaguematchs.service.SeasonService;
 import br.com.tier.rocketleaguematchs.service.exception.IntegrityViolation;
-import br.com.trier.springvespertino.service.exception.ObjectNotFound;
+import br.com.tier.rocketleaguematchs.service.exception.ObjectNotFound;
 
 @Service
 public class SeasonServiceImpl implements SeasonService {
@@ -24,7 +24,7 @@ public class SeasonServiceImpl implements SeasonService {
         }
         if (year < 2015 || year > LocalDate.now().plusYears(1).getYear()) {
             throw new IntegrityViolation(
-                    "Temporada deve estar ente 2015 e %s".formatted(LocalDate.now().plusYears(1).getYear()));
+                    "Temporada deve estar ente 2015 e %s.".formatted(LocalDate.now().plusYears(1).getYear()));
         }
     }
 
@@ -65,26 +65,30 @@ public class SeasonServiceImpl implements SeasonService {
         List<Season> lista = repository.findByYear(year);
         validateSeason(year);
         if (lista.isEmpty()) {
-            throw new ObjectNotFound("Nenhuma temporada em %s".formatted(year));
+            throw new ObjectNotFound("Nenhuma temporada em %s.".formatted(year));
         }
         return repository.findByYear(year);
     }
-
+    
     @Override
     public List<Season> findByYearBetween(Integer start, Integer end) {
-        List<Season> lista = repository.findByYearBetween(Math.min(start, end), Math.max(start, end));
+        List<Season> lista = repository.findByYearBetween(Math.min(start,end), Math.max(start, end));
         validateSeason(start);
         validateSeason(end);
-        if (lista.isEmpty()) {
-            throw new ObjectNotFound(
-                    "Nenhuma temporada entre %s e %s".formatted(Math.min(start, end), Math.max(start, end)));
+        if(lista.isEmpty()) {
+            throw new ObjectNotFound("Nenhuma temporada entre %s e %s.".formatted(Math.min(start,end), Math.max(start, end)));
         }
         return lista;
     }
 
     @Override
-    public List<Season> findByYearBetweenAndDescription(Integer start, Integer end, String description) {
-        // TODO Auto-generated method stub
-        return null;
+    public List<Season> findByDescriptionContaining(String description) {
+        List<Season> lista = repository.findByDescriptionContainingIgnoreCase(description);
+        if(lista.isEmpty()) {
+            throw new ObjectNotFound("Nenhuma temporada contem %s.".formatted(description));
+        }
+        return lista;
     }
+
+
 }

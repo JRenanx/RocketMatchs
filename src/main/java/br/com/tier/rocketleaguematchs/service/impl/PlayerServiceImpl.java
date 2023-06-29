@@ -10,7 +10,7 @@ import br.com.tier.rocketleaguematchs.models.Player;
 import br.com.tier.rocketleaguematchs.models.Team;
 import br.com.tier.rocketleaguematchs.repositories.PlayerRepository;
 import br.com.tier.rocketleaguematchs.service.PlayerService;
-import br.com.trier.springvespertino.service.exception.ObjectNotFound;
+import br.com.tier.rocketleaguematchs.service.exception.ObjectNotFound;
 
 @Service
 public class PlayerServiceImpl implements PlayerService {

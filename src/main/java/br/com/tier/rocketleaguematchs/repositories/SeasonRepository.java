@@ -11,8 +11,8 @@ import br.com.tier.rocketleaguematchs.models.Season;
 public interface SeasonRepository extends JpaRepository<Season, Integer> {
 
     List<Season> findByYear(Integer year);
-    
+
     List<Season> findByYearBetween(Integer start, Integer end);
-    
-    List<Season> findByYearBetweenAndDescription(Integer firstYear, Integer lastYear, String description);
+
+    List<Season> findByDescriptionContainingIgnoreCase(String description);
 }
