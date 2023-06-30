@@ -16,7 +16,9 @@ import br.com.tier.rocketleaguematchs.service.exception.ObjectNotFound;
 public class PlayerServiceImpl implements PlayerService {
 
     @Autowired
-    private PlayerRepository repository;
+     private PlayerRepository repository;
+    
+
 
     @Override
     public Player findById(Integer id) {
@@ -77,4 +79,6 @@ public class PlayerServiceImpl implements PlayerService {
         }
         return lista;
     }
+    
+    
 }

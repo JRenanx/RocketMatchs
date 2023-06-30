@@ -21,8 +21,7 @@ public interface MatchService {
 
     List<Match> findByDateBetween(String dateIn, String dateFin);
 
-    List<Match> findBySeasonOderByDate(Season season);
-
+    List<Match> findBySeasonOrderByDate(Season season);
 
 
 

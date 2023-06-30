@@ -73,15 +73,15 @@ public class MapServiceTest extends BaseTests {
     @Test
     @DisplayName("Teste update pista")
     void updateTest() {
-        Map runway = new Map(1, "Internacional", countryService.findById(1));
-        service.update(runway);
+        Map map = new Map(1, "Internacional", countryService.findById(1));
+        service.update(map);
         assertEquals(3, service.listAll().size());
-        assertEquals(1, runway.getId());
-        assertEquals("Internacional", runway.getName());
+        assertEquals(1, map.getId());
+        assertEquals("Internacional", map.getName());
     }
     
     @Test
-    @DisplayName("Teste deletar pista")
+    @DisplayName("Teste deletar Mapa")
     void deleteTest() {
         Map map = service.findById(1);
         assertNotNull(map);
@@ -91,7 +91,24 @@ public class MapServiceTest extends BaseTests {
         var ex = assertThrows(ObjectNotFound.class, () -> service.findById(1));
         assertEquals("Mapa 1 nao encontrado.", ex.getMessage());
     }
+    
+    @Test
+    @DisplayName("Teste pegar mapa aleatorio")
+    void getMapRandomTest() {
+        service.delete(1); 
+        service.delete(2); 
+        service.delete(3); 
+        var ex = assertThrows(ObjectNotFound.class, () -> service.getRandom());
+        assertEquals("Mapa não cadastrado.", ex.getMessage());
+    }
 
+    @Test
+    @DisplayName("Teste pegar mapa não encontrado")
+    void getMapRandomNotFoundedTest() {
+        Map map = service.getRandom();
+        assertNotNull(map);
+        assertEquals(3, map.getId());
+    }
 
     
 }

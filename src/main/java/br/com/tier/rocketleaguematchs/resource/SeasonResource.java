@@ -49,4 +49,19 @@ public class SeasonResource {
     public ResponseEntity<List<Season>> listAll() {
         return ResponseEntity.ok(service.listAll());
     }
+    
+    @GetMapping("/year/{year}")
+    public ResponseEntity<List<Season>> findByYear(@PathVariable Integer year) {
+        return ResponseEntity.ok(service.findByYear(year));
+    }
+    
+    @GetMapping("/year/{start}/{end}")
+    public ResponseEntity<List<Season>> findByYearBetween(@PathVariable Integer start, @PathVariable Integer end){
+        return ResponseEntity.ok(service.findByYearBetween(start,end));
+    }
+    
+    @GetMapping("/description/{description}")
+    public ResponseEntity<List<Season>> findByDescriptionContainsIgnoreCase(@PathVariable String description) {
+        return ResponseEntity.ok(service.findByDescriptionContainsIgnoreCase(description));
+    }
 }

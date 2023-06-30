@@ -20,6 +20,6 @@ public interface SeasonService {
 
     List<Season> findByYearBetween(Integer start, Integer end);
 
-    List<Season> findByDescriptionContaining(String description);
+    List<Season> findByDescriptionContainsIgnoreCase(String description);
 
 }

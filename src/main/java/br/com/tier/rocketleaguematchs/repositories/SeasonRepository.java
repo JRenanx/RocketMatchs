@@ -14,5 +14,5 @@ public interface SeasonRepository extends JpaRepository<Season, Integer> {
 
     List<Season> findByYearBetween(Integer start, Integer end);
 
-    List<Season> findByDescriptionContainingIgnoreCase(String description);
+    List<Season> findByDescriptionContainsIgnoreCase(String description);
 }

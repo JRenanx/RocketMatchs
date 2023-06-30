@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +37,7 @@ public class PlayerServiceTest extends BaseTests {
 
     @Test
     @DisplayName("Teste buscar por ID")
-    void searchIdValidTest() {
+    void findIdTest() {
         Player player = service.findById(1);
         assertNotNull(player);
         assertEquals(1, player.getId());
@@ -44,27 +46,13 @@ public class PlayerServiceTest extends BaseTests {
 
     @Test
     @DisplayName("Teste buscar por ID inválido")
-    void searchIdInvalidTest() {
+    void findIdInvalidTest() {
         var ex = assertThrows(ObjectNotFound.class, () -> service.findById(10));
         assertEquals("Jogador 10 nao encontrado.", ex.getMessage());
     }
 
     @Test
-    @DisplayName("Teste buscar todos")
-    void searchAllTest() {
-        assertEquals(3, service.listAll().size());
-    }
-
-    @Test
-    @DisplayName("Teste buscar todos com nenhum cadastro")
-    @Sql({ "classpath:/resources/sqls/clear_tables.sql" })
-    void searchAllWithNoPlayerTest() {
-        var ex = assertThrows(ObjectNotFound.class, () -> service.listAll());
-        assertEquals("Nenhum jogador cadastrado.", ex.getMessage());
-    }
-
-    @Test
-    @DisplayName("Insert novo player")
+    @DisplayName("Teste insere novo jogador")
     @Sql({ "classpath:/resources/sqls/clear_tables.sql" })
     @Sql({ "classpath:/resources/sqls/country.sql" })
     @Sql({ "classpath:/resources/sqls/team.sql" })
@@ -77,7 +65,7 @@ public class PlayerServiceTest extends BaseTests {
     }
 
     @Test
-    @DisplayName("Teste update player")
+    @DisplayName("Teste update jogador")
     void updateTest() {
         Player player = service.findById(1);
         assertNotNull(player);
@@ -88,6 +76,78 @@ public class PlayerServiceTest extends BaseTests {
         assertEquals(3, service.listAll().size());
         assertEquals(1, player.getId());
         assertEquals("Updated Player", player.getName());
+    }
+
+    @Test
+    @DisplayName("Teste delete jogador")
+    void deleteTest() {
+        Player player = service.findById(1);
+        assertNotNull(player);
+        assertEquals(1, player.getId());
+        assertEquals("Yanxnz", player.getName());
+        service.delete(1);
+        var ex = assertThrows(ObjectNotFound.class, () -> service.findById(1));
+        assertEquals("Jogador 1 nao encontrado.", ex.getMessage());
+    }
+
+    @Test
+    @DisplayName("Teste buscar todos")
+    void findAllTest() {
+        assertEquals(3, service.listAll().size());
+    }
+
+    @Test
+    @DisplayName("Teste buscar todos com nenhum cadastro")
+    @Sql({ "classpath:/resources/sqls/clear_tables.sql" })
+    void findAllWithNoPlayerTest() {
+        var ex = assertThrows(ObjectNotFound.class, () -> service.listAll());
+        assertEquals("Nenhum jogador cadastrado.", ex.getMessage());
+    }
+
+    @Test
+    @DisplayName("Teste encontra jogador por nome")
+    void findByNameStartsWithIgnoreCaseTest() {
+        List<Player> lista = service.findByNameStartsWithIgnoreCase("Y");
+        assertEquals(1, lista.size());
+    }
+
+    @Test
+    @DisplayName("Teste encontra jogador por nome sem nomes iguais")
+    void findByNameStartsWithIgnoreCaseInvalidTest() {
+        var ex = assertThrows(ObjectNotFound.class, () -> service.findByNameStartsWithIgnoreCase("H"));
+        assertEquals("Nenhum jogador cadastrado com nome: H", ex.getMessage());
+    }
+
+    @Test
+    @DisplayName("Teste encontra pilotos por time")
+    void findByTeamOrderByName() {
+        List<Player> lista = service.findByTeamOrderByName(teamService.findById(1));
+        assertEquals(3, lista.size());
+    }
+
+    @Test
+    @DisplayName("Teste encontra jogador por time sem times encontrados")
+    @Sql({ "classpath:/resources/sqls/clear_tables.sql" })
+    @Sql({ "classpath:/resources/sqls/team.sql" })
+    void findByTeamOrderByNameInvalid() {
+        var ex = assertThrows(ObjectNotFound.class, () -> service.findByTeamOrderByName(teamService.findById(1)));
+        assertEquals("Nenhum jogador cadastrado na equipe: FURIA", ex.getMessage());
+    }
+
+    @Test
+    @DisplayName("Teste encontra jogador por país")
+    void findByCountryOrderByNameTest() {
+        List<Player> lista = service.findByCountryOrderByName(countryService.findById(1));
+        assertEquals(1, lista.size());
+    }
+
+    @Test
+    @DisplayName("Encontra jogador por país sem nenhum com este país")
+    @Sql({ "classpath:/resources/sqls/clear_tables.sql" })
+    @Sql({ "classpath:/resources/sqls/country.sql" })
+    void findByCountryOrderByNameInvalidTest() {
+        var ex = assertThrows(ObjectNotFound.class, () -> service.findByCountryOrderByName(countryService.findById(1)));
+        assertEquals("Nenhum jogador cadastrado no pais: Brasil", ex.getMessage());
     }
 
 }

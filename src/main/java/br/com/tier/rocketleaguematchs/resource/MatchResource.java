@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.tier.rocketleaguematchs.models.Match;
+import br.com.tier.rocketleaguematchs.models.dto.MatchDTO;
 import br.com.tier.rocketleaguematchs.service.MapService;
 import br.com.tier.rocketleaguematchs.service.MatchService;
 import br.com.tier.rocketleaguematchs.service.SeasonService;
@@ -32,23 +34,23 @@ public class MatchResource {
     private MapService mapService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Match> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok(service.findById(id));
+    public ResponseEntity<MatchDTO> findById(@PathVariable Integer id) {
+        return ResponseEntity.ok(service.findById(id).toDTO());
     }
 
     @PostMapping
-    ResponseEntity<Match> insert(@RequestBody Match match) {
-        seasonService.findById(match.getSeason().getId());
-        mapService.findById(match.getMap().getId());
-        return ResponseEntity.ok(service.insert(match));
+    public ResponseEntity<MatchDTO> insert(@RequestBody MatchDTO matchDTO) {
+        Match match = new Match(matchDTO, mapService.findById(matchDTO.getId()),
+                seasonService.findById(matchDTO.getSeasonId()));
+        return ResponseEntity.ok(service.insert(match).toDTO());
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Match> update(@PathVariable Integer id, @RequestBody Match match) {
-        seasonService.findById(match.getSeason().getId());
-        mapService.findById(match.getMap().getId());
+    public ResponseEntity<MatchDTO> update(@PathVariable Integer id, @RequestBody MatchDTO matchDTO) {
+        Match match = new Match(matchDTO, mapService.findById(matchDTO.getSeasonId()),
+                seasonService.findById(matchDTO.getSeasonId()));
         match.setId(id);
-        return ResponseEntity.ok(service.update(match));
+        return ResponseEntity.ok(service.update(match).toDTO());
     }
 
     @DeleteMapping
@@ -58,10 +60,24 @@ public class MatchResource {
     }
 
     @GetMapping
-    ResponseEntity<List<Match>> listAll() {
-        return ResponseEntity.ok(service.listAll());
+    ResponseEntity<List<MatchDTO>> listAll() {
+        return ResponseEntity.ok(service.listAll().stream().map(race -> race.toDTO()).toList());
     }
-    
-    
+
+    @GetMapping("/date")
+    public ResponseEntity<List<MatchDTO>> findByDate(@RequestParam String date) {
+        return ResponseEntity.ok(service.findByDate(date).stream().map(race -> race.toDTO()).toList());
+    }
+
+    @GetMapping("/date/between")
+    public ResponseEntity<List<MatchDTO>> findByDateBetween(@RequestParam String date1, @RequestParam String date2) {
+        return ResponseEntity.ok(service.findByDateBetween(date1, date2).stream().map(race -> race.toDTO()).toList());
+    }
+
+    @GetMapping("/season/{id}")
+    public ResponseEntity<List<MatchDTO>> findBySeasonOrderByDate(@PathVariable Integer id) {
+        return ResponseEntity.ok(service.findBySeasonOrderByDate(seasonService.findById(id)).stream()
+                .map(race -> race.toDTO()).toList());
+    }
 
 }

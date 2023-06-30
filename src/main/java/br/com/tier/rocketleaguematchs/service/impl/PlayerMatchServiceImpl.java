@@ -21,7 +21,7 @@ public class PlayerMatchServiceImpl implements PlayerMatchService {
     @Override
     public PlayerMatch findById(Integer id) {
         return repository.findById(id)
-                .orElseThrow(() -> new ObjectNotFound("Nenhum dos jogador/partida %s existe".formatted(id)));
+                .orElseThrow(() -> new ObjectNotFound("Jogador/Partida %s não encontrado.".formatted(id)));
     }
 
     @Override
@@ -65,7 +65,7 @@ public class PlayerMatchServiceImpl implements PlayerMatchService {
     public List<PlayerMatch> findByMatchOrderByGoals(Match match) {
         List<PlayerMatch> lista = repository.findByMatchOrderByGoals(match);
         if (lista.isEmpty()) {
-            throw new ObjectNotFound("Nenhum jogador associado com a partida: %s".formatted(match.getId()));
+            throw new ObjectNotFound("Jogador não associado com a partida: %s".formatted(match.getId()));
         }
         return lista;
     }

@@ -15,5 +15,7 @@ public interface MapService {
     void delete(Integer id);
 
     List<Map> listAll();
+    
+    Map getRandom();
 
 }

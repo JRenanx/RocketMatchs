@@ -11,11 +11,11 @@ import br.com.tier.rocketleaguematchs.models.Match;
 import br.com.tier.rocketleaguematchs.models.Season;
 
 @Repository
-public interface MatchRepository extends JpaRepository<Match, Integer>{
-
-    List<Match> findByDateBetween(ZonedDateTime dateIn, ZonedDateTime dateFin);
+public interface MatchRepository extends JpaRepository<Match, Integer> {
 
     List<Match> findByDate(ZonedDateTime date);
+
+    List<Match> findByDateBetween(ZonedDateTime dateIn, ZonedDateTime dateFin);
 
     List<Match> findByMapOrderByDate(Map map);
 

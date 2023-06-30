@@ -13,9 +13,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 
 import br.com.tier.rocketleaguematchs.BaseTests;
-import br.com.tier.rocketleaguematchs.models.Map;
 import br.com.tier.rocketleaguematchs.models.Match;
-import br.com.tier.rocketleaguematchs.models.Season;
 import br.com.tier.rocketleaguematchs.service.MapService;
 import br.com.tier.rocketleaguematchs.service.MatchService;
 import br.com.tier.rocketleaguematchs.service.SeasonService;
@@ -100,7 +98,7 @@ public class MatchServiceTest extends BaseTests {
         Match match = service.findById(1);
         assertNotNull(match);
         assertEquals(1, match.getId());
-        assertEquals(2018, match.getDate().getYear());
+        assertEquals(2020, match.getDate().getYear());
         service.delete(1);
         var ex = assertThrows(ObjectNotFound.class, () -> service.findById(1));
         assertEquals("Partida 1 nao encontrada.", ex.getMessage());
@@ -116,14 +114,14 @@ public class MatchServiceTest extends BaseTests {
     @Test
     @DisplayName("Encontra por data")
     void findByDateTest() {
-        List<Match> lista = service.findByDate("21/06/2018");
+        List<Match> lista = service.findByDate("21/06/2020");
         assertEquals(1, lista.size());          
     }
     
     @Test
     @DisplayName("Teste encontra por data não existe")
     void findByDateNonExistTest() {
-        List<Match> lista = service.findByDate("21/06/2018");
+        List<Match> lista = service.findByDate("21/06/2020");
         assertEquals(1, lista.size());  
         var ex = assertThrows(ObjectNotFound.class, () -> service.findByDate("21/06/2025"));
         assertEquals("Nenhuma partida cadastrada na data 21/06/2025", ex.getMessage());
@@ -132,14 +130,14 @@ public class MatchServiceTest extends BaseTests {
     @Test
     @DisplayName("Teste encontra por temporada ordenado por data")
     void findBySeasonOrderByDateTest() {
-        List<Match> lista = service.findBySeasonOderByDate(seasonService.findById(1));
+        List<Match> lista = service.findBySeasonOrderByDate(seasonService.findById(1));
         assertEquals(1, lista.size());
     }
     
     @Test
     @DisplayName("Teste encontra por temporada ordenado por data não existe")
     void findBySeasonOrderByDateNonExistTest() {
-        var ex = assertThrows(ObjectNotFound.class, () -> service.findBySeasonOderByDate(seasonService.findById(3)));
+        var ex = assertThrows(ObjectNotFound.class, () -> service.findBySeasonOrderByDate(seasonService.findById(3)));
         assertEquals("Nenhuma partida cadastrada na temporada Temporada 2022", ex.getMessage());
     }
     
@@ -147,7 +145,7 @@ public class MatchServiceTest extends BaseTests {
     @Test
     @DisplayName("Teste encontra por data entre")
     void findByDateBetweenTest() {
-        List<Match> lista = service.findByDateBetween("01/10/2018", "01/10/2020");
+        List<Match> lista = service.findByDateBetween("01/10/2020", "01/10/2022");
         assertEquals(2, lista.size());  
     }
     

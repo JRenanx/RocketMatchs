@@ -20,7 +20,7 @@ public class CountryServiceImpl implements CountryService {
     private void findByName(Country country) {
         Country busca = repository.findByName(country.getName());
         if (busca != null && busca.getId() != country.getId()) {
-            throw new IntegrityViolation("Nome já cadastrado : %s".formatted(country.getName()));
+            throw new IntegrityViolation("Nome já cadastrado: %s.".formatted(country.getName()));
         }
     }
 
@@ -40,7 +40,7 @@ public class CountryServiceImpl implements CountryService {
     public List<Country> listAll() {
         List<Country> lista = repository.findAll();
         if (lista.isEmpty()) {
-            throw new ObjectNotFound("Nenhum país cadastrado");
+            throw new ObjectNotFound("Nenhum país cadastrado.");
         }
         return lista;
     }
@@ -63,7 +63,7 @@ public class CountryServiceImpl implements CountryService {
     public List<Country> findByNameStartsWithIgnoreCase(String name) {
         List<Country> lista = repository.findByNameStartsWithIgnoreCase(name);
         if (lista.isEmpty()) {
-            throw new ObjectNotFound("Nenhum país inicia com %s".formatted(name));
+            throw new ObjectNotFound("Nenhum país inicia com %s.".formatted(name));
         }
         return lista;
     }

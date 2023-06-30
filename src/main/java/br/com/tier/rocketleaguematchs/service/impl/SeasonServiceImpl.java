@@ -20,7 +20,7 @@ public class SeasonServiceImpl implements SeasonService {
 
     private void validateSeason(Integer year) {
         if (year == null) {
-            throw new IntegrityViolation("O ano não pode ser nulo!");
+            throw new IntegrityViolation("O ano não pode ser nulo.");
         }
         if (year < 2015 || year > LocalDate.now().plusYears(1).getYear()) {
             throw new IntegrityViolation(
@@ -62,33 +62,33 @@ public class SeasonServiceImpl implements SeasonService {
 
     @Override
     public List<Season> findByYear(Integer year) {
-        List<Season> lista = repository.findByYear(year);
         validateSeason(year);
+        List<Season> lista = repository.findByYear(year);
         if (lista.isEmpty()) {
             throw new ObjectNotFound("Nenhuma temporada em %s.".formatted(year));
         }
         return repository.findByYear(year);
     }
-    
+
     @Override
     public List<Season> findByYearBetween(Integer start, Integer end) {
-        List<Season> lista = repository.findByYearBetween(Math.min(start,end), Math.max(start, end));
         validateSeason(start);
         validateSeason(end);
-        if(lista.isEmpty()) {
-            throw new ObjectNotFound("Nenhuma temporada entre %s e %s.".formatted(Math.min(start,end), Math.max(start, end)));
+        List<Season> lista = repository.findByYearBetween(Math.min(start, end), Math.max(start, end));
+        if (lista.isEmpty()) {
+            throw new ObjectNotFound(
+                    "Nenhuma temporada entre %s e %s.".formatted(Math.min(start, end), Math.max(start, end)));
         }
         return lista;
     }
 
     @Override
-    public List<Season> findByDescriptionContaining(String description) {
-        List<Season> lista = repository.findByDescriptionContainingIgnoreCase(description);
-        if(lista.isEmpty()) {
+    public List<Season> findByDescriptionContainsIgnoreCase(String description) {
+        List<Season> lista = repository.findByDescriptionContainsIgnoreCase(description);
+        if (lista.isEmpty()) {
             throw new ObjectNotFound("Nenhuma temporada contem %s.".formatted(description));
         }
         return lista;
     }
-
 
 }

@@ -50,7 +50,8 @@ public class MapServiceImpl implements MapService {
         return lista;
     }
 
-    public Map getRandomMap() {
+    @Override
+    public Map getRandom() {
         List<Map> lista = repository.findAll();
         if (lista.isEmpty()) {
             throw new ObjectNotFound("Mapa não cadastrado.");
@@ -59,4 +60,6 @@ public class MapServiceImpl implements MapService {
         int index = random.nextInt(lista.size());
         return lista.get(index);
     }
+
+
 }

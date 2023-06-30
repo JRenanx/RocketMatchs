@@ -6,10 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.tier.rocketleaguematchs.models.Map;
 import br.com.tier.rocketleaguematchs.models.Match;
 import br.com.tier.rocketleaguematchs.models.Season;
 import br.com.tier.rocketleaguematchs.repositories.MatchRepository;
+import br.com.tier.rocketleaguematchs.service.MapService;
 import br.com.tier.rocketleaguematchs.service.MatchService;
 import br.com.tier.rocketleaguematchs.service.exception.ObjectNotFound;
 import br.com.tier.rocketleaguematchs.utils.DateUtils;
@@ -19,6 +19,9 @@ public class MatchServiceImpl implements MatchService {
 
     @Autowired
     MatchRepository repository;
+    
+    @Autowired
+    MapService mapService;
 
     @Override
     public Match findById(Integer id) {
@@ -28,6 +31,7 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public Match insert(Match match) {
+        mapService.getRandom();
         return repository.save(match);
     }
 
@@ -77,7 +81,7 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public List<Match> findBySeasonOderByDate(Season season) {
+    public List<Match> findBySeasonOrderByDate(Season season) {
         List<Match> lista = repository.findBySeasonOrderByDate(season);
         if (lista.isEmpty()) {
             throw new ObjectNotFound("Nenhuma partida cadastrada na temporada %s".formatted(season.getDescription()));

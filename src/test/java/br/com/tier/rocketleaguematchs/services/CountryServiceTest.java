@@ -51,26 +51,26 @@ public class CountryServiceTest extends BaseTests {
     @DisplayName("Teste buscar todos com nenhum cadastro")
     void searchAllWithNoCountryTest() {
         var ex = assertThrows(ObjectNotFound.class, () -> service.listAll());
-        assertEquals("Nenhum país cadastrado", ex.getMessage());
+        assertEquals("Nenhum país cadastrado.", ex.getMessage());
     }
 
     @Test
     @DisplayName("Teste insere novo pais")
     void insertCountry() {
-        Country pais = new Country(null, "insert");
-        service.insert(pais);
+        Country country = new Country(null, "insert");
+        service.insert(country);
         assertEquals(1, service.listAll().size());
-        assertEquals(1, pais.getId());
-        assertEquals("insert", pais.getName());
+        assertEquals(1, country.getId());
+        assertEquals("insert", country.getName());
     }
 
     @Test
     @DisplayName("Teste insere novo pais com mesmo nome")
     @Sql({ "classpath:/resources/sqls/country.sql" })
     void insertDuplicatedNameTest() {
-        Country country = new Country(null, "Bosnia");
+        Country country = new Country(null, "Brasil");
         var ex = assertThrows(IntegrityViolation.class, () -> service.insert(country));
-        assertEquals("Nome já cadastrado : Bosnia", ex.getMessage());
+        assertEquals("Nome já cadastrado: Brasil.", ex.getMessage());
     }
 
     @Test
@@ -83,7 +83,7 @@ public class CountryServiceTest extends BaseTests {
         assertEquals("Brasil", pais.getName());
         pais = new Country(1, "update");
         service.update(pais);
-        assertEquals(4, service.listAll().size());
+        assertEquals(3, service.listAll().size());
         assertEquals(1, pais.getId());
         assertEquals("update", pais.getName());
     }
@@ -94,7 +94,7 @@ public class CountryServiceTest extends BaseTests {
     void updateInvalidTest() {
         Country country = new Country(10, "ABC");
         var ex = assertThrows(ObjectNotFound.class, () -> service.update(country));
-        assertEquals("País de id 10 não encontrado", ex.getMessage());
+        assertEquals("País de id 10 não encontrado.", ex.getMessage());
     }
 
     @Test
@@ -117,15 +117,34 @@ public class CountryServiceTest extends BaseTests {
         assertEquals(3, service.listAll().size());
         assertEquals(1, service.listAll().get(0).getId());
     }
-
+    
     @Test
-    @DisplayName("Teste procura por nome")
-    @Sql({ "classpath:/resources/sqls/country.sql" })
-    void searchByNameTest() {
+    @DisplayName("Teste Procura por nome")
+    @Sql({"classpath:/resources/sqls/country.sql"})
+    void findByNameTest() {   
         assertEquals(1, service.findByNameStartsWithIgnoreCase("br").size());
-        var ex = assertThrows(IntegrityViolation.class, () -> service.findByNameStartsWithIgnoreCase("x"));
-        assertEquals("Nenhum país inicia com x", ex.getMessage());
-
+        assertEquals(1, service.findByNameStartsWithIgnoreCase("fr").size());
+        var ex = assertThrows(ObjectNotFound.class, () -> service.findByNameStartsWithIgnoreCase("x"));
+        assertEquals("Nenhum país inicia com x.", ex.getMessage());
     }
+    
+    @Test
+    @DisplayName("Teste Procura por nome que nao existe")
+    @Sql({"classpath:/resources/sqls/country.sql"})
+    void findByNameNonExistTest() {   
+        assertEquals(1, service.findByNameStartsWithIgnoreCase("br").size());
+        var ex = assertThrows(ObjectNotFound.class, () -> service.findByNameStartsWithIgnoreCase("x"));
+        assertEquals("Nenhum país inicia com x.", ex.getMessage());
+        
+    }
+    @Test
+    @DisplayName("Ordena por nome")
+    @Sql({"classpath:/resources/sqls/country.sql"})
+    void searchAllAndOrderByName() {    
+        assertEquals(1, service.findAllByOrderByName().get(0).getId());
+        assertEquals(2, service.findAllByOrderByName().get(1).getId());
+        assertEquals(3, service.findAllByOrderByName().get(2).getId());
+    }
+    
 
 }

@@ -118,8 +118,18 @@ public class SeasonServiceTest extends BaseTests {
     @Sql({ "classpath:/resources/sqls/season.sql" })
     void searchByYearNonExistTest() {
         var ex = assertThrows(ObjectNotFound.class, () ->
-        service.findByYear(2030));
-        assertEquals("Nenhuma temporada em 2030", ex.getMessage());
+        service.findByYear(2024));
+        assertEquals("Nenhuma temporada em 2024.", ex.getMessage());
+
+    }
+    
+    @Test
+    @DisplayName("Teste procura por ano não existente")
+    @Sql({ "classpath:/resources/sqls/season.sql" })
+    void searchByYearNullTest() {
+        var ex = assertThrows(ObjectNotFound.class, () ->
+        service.findByYear(null));
+        assertEquals("Ano não pode ser nulo.", ex.getMessage());
 
     }
 
@@ -127,9 +137,9 @@ public class SeasonServiceTest extends BaseTests {
     @DisplayName("Teste procura por descrição")
     @Sql({ "classpath:/resources/sqls/season.sql" })
     void findByDescriptionTest() {
-        assertEquals(3, service.findByDescriptionContaining("T").size());
-        assertEquals(3, service.findByDescriptionContaining("2").size());
-        var ex = assertThrows(ObjectNotFound.class, () -> service.findByDescriptionContaining("Z"));
+        assertEquals(3, service.findByDescriptionContainsIgnoreCase("T").size());
+        assertEquals(3, service.findByDescriptionContainsIgnoreCase("2").size());
+        var ex = assertThrows(ObjectNotFound.class, () -> service.findByDescriptionContainsIgnoreCase("Z"));
         assertEquals("Nenhuma temporada contem Z.", ex.getMessage());
     }
 
@@ -138,7 +148,7 @@ public class SeasonServiceTest extends BaseTests {
     @Sql({ "classpath:/resources/sqls/season.sql" })
     void findByYearBetweenTest() {
         assertEquals(3, service.findByYearBetween(2020, 2022).size());
-        var ex = assertThrows(IntegrityViolation.class, () -> service.findByYearBetween(2000, 2010));
+        var ex = assertThrows(ObjectNotFound.class, () -> service.findByYearBetween(2000, 2010));
         assertEquals("Temporada deve estar ente 2015 e 2024.", ex.getMessage());
     }
     
@@ -146,9 +156,8 @@ public class SeasonServiceTest extends BaseTests {
     @DisplayName("Teste procura errado por ano entre")
     @Sql({ "classpath:/resources/sqls/season.sql" })
     void findByWrongYearBetweenTest() {
-        assertEquals(3, service.findByYearBetween(2000, 2010).size());
-        var ex = assertThrows(ObjectNotFound.class, () -> service.findByYearBetween(2000, 2010));
-        assertEquals("Nenhuma temporada entre 2000 e 2010.", ex.getMessage());
+        var ex = assertThrows(ObjectNotFound.class, () -> service.findByYearBetween(2015, 2018));
+        assertEquals("Nenhuma temporada entre 2015 e 2018.", ex.getMessage());
     }    
     
 
