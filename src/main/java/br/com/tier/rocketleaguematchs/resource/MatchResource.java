@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,11 +34,13 @@ public class MatchResource {
     @Autowired
     private MapService mapService;
 
+    @Secured({ "ROLE_USER" })
     @GetMapping("/{id}")
     public ResponseEntity<MatchDTO> findById(@PathVariable Integer id) {
         return ResponseEntity.ok(service.findById(id).toDTO());
     }
 
+    @Secured({ "ROLE_ADMIN" })
     @PostMapping
     public ResponseEntity<MatchDTO> insert(@RequestBody MatchDTO matchDTO) {
         Match match = new Match(matchDTO, mapService.findById(matchDTO.getId()),
@@ -45,6 +48,7 @@ public class MatchResource {
         return ResponseEntity.ok(service.insert(match).toDTO());
     }
 
+    @Secured({ "ROLE_ADMIN" })
     @PutMapping("/{id}")
     public ResponseEntity<MatchDTO> update(@PathVariable Integer id, @RequestBody MatchDTO matchDTO) {
         Match match = new Match(matchDTO, mapService.findById(matchDTO.getSeasonId()),
@@ -53,27 +57,32 @@ public class MatchResource {
         return ResponseEntity.ok(service.update(match).toDTO());
     }
 
+    @Secured({ "ROLE_ADMIN" })
     @DeleteMapping
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         service.delete(id);
         return ResponseEntity.ok().build();
     }
 
+    @Secured({ "ROLE_USER" })
     @GetMapping
     ResponseEntity<List<MatchDTO>> listAll() {
         return ResponseEntity.ok(service.listAll().stream().map(race -> race.toDTO()).toList());
     }
 
+    @Secured({ "ROLE_USER" })
     @GetMapping("/date")
     public ResponseEntity<List<MatchDTO>> findByDate(@RequestParam String date) {
         return ResponseEntity.ok(service.findByDate(date).stream().map(race -> race.toDTO()).toList());
     }
 
+    @Secured({ "ROLE_USER" })
     @GetMapping("/date/between")
     public ResponseEntity<List<MatchDTO>> findByDateBetween(@RequestParam String date1, @RequestParam String date2) {
         return ResponseEntity.ok(service.findByDateBetween(date1, date2).stream().map(race -> race.toDTO()).toList());
     }
 
+    @Secured({ "ROLE_USER" })
     @GetMapping("/season/{id}")
     public ResponseEntity<List<MatchDTO>> findBySeasonOrderByDate(@PathVariable Integer id) {
         return ResponseEntity.ok(service.findBySeasonOrderByDate(seasonService.findById(id)).stream()

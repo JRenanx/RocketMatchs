@@ -20,12 +20,8 @@ public class JwtUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         br.com.tier.rocketleaguematchs.models.User user = repository.findByEmail(email).orElseThrow(null);
-        return User.builder()
-                .username(user.getEmail())
-                .password(encoder.encode(user.getPassword()))
-                .roles(user.getRoles().split(","))
-                .build();
+        return User.builder().username(user.getEmail()).password(encoder.encode(user.getPassword()))
+                .roles(user.getRoles().split(",")).build();
     }
-    
 
 }

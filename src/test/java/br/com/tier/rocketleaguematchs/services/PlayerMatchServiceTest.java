@@ -56,18 +56,18 @@ public class PlayerMatchServiceTest extends BaseTests {
     @DisplayName("Teste buscar por ID inválido")
     void findByIdInvalidTest() {
         var ex = assertThrows(ObjectNotFound.class, () -> service.findById(10));
-        assertEquals("Jogador/Partida 1 não encontrado.", ex.getMessage());
+        assertEquals("Jogador/Partida 10 não encontrado.", ex.getMessage());
     }
 
     @Test
     @DisplayName("Insert novo jogador/partida")
     @Sql({ "classpath:/resources/sqls/clear_tables.sql" })
     @Sql({ "classpath:/resources/sqls/country.sql" })
-    @Sql({ "classpath:/resources/sqls/team.sql" })
-    @Sql({ "classpath:/resources/sqls/player.sql" })
     @Sql({ "classpath:/resources/sqls/map.sql" })
+    @Sql({ "classpath:/resources/sqls/team.sql" })
     @Sql({ "classpath:/resources/sqls/season.sql" })
     @Sql({ "classpath:/resources/sqls/match.sql" })
+    @Sql({ "classpath:/resources/sqls/player.sql" })
     void insert() {
         PlayerMatch playerM = new PlayerMatch(null, 1, playerService.findById(1), matchService.findById(1));
         service.insert(playerM);
@@ -92,19 +92,17 @@ public class PlayerMatchServiceTest extends BaseTests {
 
     @Test
     @DisplayName("Teste insere update jogador/partida")
-    @Sql({ "classpath:/resources/sqls/clear_tables.sql" })
-    @Sql({ "classpath:/resources/sqls/country.sql" })
-    @Sql({ "classpath:/resources/sqls/team.sql" })
-    @Sql({ "classpath:/resources/sqls/player.sql" })
-    @Sql({ "classpath:/resources/sqls/map.sql" })
-    @Sql({ "classpath:/resources/sqls/season.sql" })
-    @Sql({ "classpath:/resources/sqls/match.sql" })
-    void updateTest() {
-        PlayerMatch playerM = service.findById(1);
-        PlayerMatch updatePlayer = new PlayerMatch(1, 10, playerM.getPlayer(), playerM.getMatch());
-        service.update(updatePlayer);
-        assertEquals(10, service.findById(1).getGoals());
-    }
+    void update() {
+    PlayerMatch playerM = service.findById(1);
+    assertNotNull(playerM);
+    assertEquals(1, playerM.getId());
+    assertEquals(5, service.findById(1).getGoals());
+    playerM = new PlayerMatch(1, 10, playerService.findById(1), matchService.findById(1));
+    service.update(playerM);
+    assertEquals(3, service.listAll().size());
+    assertEquals(1, playerM.getId());
+    assertEquals(10, service.findById(1).getGoals());
+}
 
     @Test
     @DisplayName("Teste deletar Jogador/partida")
@@ -126,6 +124,20 @@ public class PlayerMatchServiceTest extends BaseTests {
         assertEquals(5, lista.get(1).getGoals());
     }
     
+    @Test
+    @DisplayName("Encontra piloto/corrida por corrida sem corrida encontrados")
+    @Sql({"classpath:/resources/sqls/clear_tables.sql"})
+    @Sql({"classpath:/resources/sqls/country.sql"})
+    @Sql({"classpath:/resources/sqls/team.sql"})
+    @Sql({"classpath:/resources/sqls/player.sql"})
+    @Sql({"classpath:/resources/sqls/season.sql"})
+    @Sql({"classpath:/resources/sqls/map.sql"})
+    @Sql({"classpath:/resources/sqls/match.sql"})
+    void findByMatchNonExist() {
+        var ex = assertThrows(ObjectNotFound.class, () -> service.findByMatchOrderByGoals(matchService.findById(1)));
+        assertEquals("Jogador não associado com a partida: 1", ex.getMessage());
+    }
+    
 
     @Test
     @DisplayName("Teste buscar jogador por odem de gol")
@@ -135,5 +147,21 @@ public class PlayerMatchServiceTest extends BaseTests {
         assertEquals(3, lista.get(0).getGoals());
         assertEquals(5, lista.get(1).getGoals());
     }
+
+    
+    @Test
+    @DisplayName("Encontra piloto/corrida por jogador sem nenhum com este jogador")
+    @Sql({"classpath:/resources/sqls/clear_tables.sql"})
+    @Sql({"classpath:/resources/sqls/country.sql"})
+    @Sql({"classpath:/resources/sqls/team.sql"})
+    @Sql({"classpath:/resources/sqls/player.sql"})
+    @Sql({"classpath:/resources/sqls/season.sql"})
+    @Sql({"classpath:/resources/sqls/map.sql"})
+    @Sql({"classpath:/resources/sqls/match.sql"})
+    void findByplayerNonExistTest() {
+        var ex = assertThrows(ObjectNotFound.class, () -> service.findByPlayerOrderByGoals(playerService.findById(1)));
+        assertEquals("Jogador não cadastrado: Yanxnz".formatted(playerService.findById(1).getName()), ex.getMessage());
+    }
+
 
 }

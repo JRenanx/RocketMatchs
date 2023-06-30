@@ -1,5 +1,4 @@
 package br.com.tier.rocketleaguematchs.config.jwt;
-
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import br.com.tier.rocketleaguematchs.models.User;
 
-
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 

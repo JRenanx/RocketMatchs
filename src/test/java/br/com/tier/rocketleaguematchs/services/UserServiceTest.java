@@ -30,9 +30,9 @@ class UserServiceTest extends BaseTests {
     @DisplayName("Teste buscar usuário por ID")
     @Sql({ "classpath:/resources/sqls/user.sql" })
     void findByIdTest() {
-        var usuario = userService.findById(3);
+        var usuario = userService.findById(4);
         assertNotNull(usuario);
-        assertEquals(3, usuario.getId());
+        assertEquals(4, usuario.getId());
         assertEquals("User 1", usuario.getName());
         assertEquals("email1@gmail.com", usuario.getEmail());
         assertEquals("senha1", usuario.getPassword());
@@ -60,7 +60,7 @@ class UserServiceTest extends BaseTests {
         User usuario = new User(null, "insert", "insert", "insert", "ADMIN");
         userService.insert(usuario);
         usuario = userService.findById(1);
-        assertEquals(3, usuario.getId());
+        assertEquals(1, usuario.getId());
         assertEquals("insert", usuario.getName());
         assertEquals("insert", usuario.getEmail());
         assertEquals("insert", usuario.getPassword());
@@ -70,10 +70,10 @@ class UserServiceTest extends BaseTests {
     @DisplayName("Teste remover usuário")
     @Sql({ "classpath:/resources/sqls/user.sql" })
     void removeUserTest() {
-        userService.delete(3);
+        userService.delete(4);
         List<User> lista = userService.listAll();
         assertEquals(2, lista.size());
-        assertEquals(4, lista.get(0).getId());
+        assertEquals(5, lista.get(0).getId());
     }
 
     @Test
@@ -95,7 +95,7 @@ class UserServiceTest extends BaseTests {
     @DisplayName("Teste alterar usuário")
     @Sql({ "classpath:/resources/sqls/user.sql" })
     void updateUsersTest() {
-        var usuario = userService.findById(3);
+        var usuario = userService.findById(4);
         assertEquals("User 1", usuario.getName());
         var usuarioAltera = new User(4, "altera", "altera", "altera", "ADMIN");
         userService.update(usuarioAltera);
@@ -125,7 +125,7 @@ class UserServiceTest extends BaseTests {
     @DisplayName("Test altera usuario com email duplicado")
     @Sql({ "classpath:/resources/sqls/user.sql" })
     void updateEmailDuplicatedTest() {
-        User user = new User(2, "User2", "email1@gmail.com", "123", "ADMIN");
+        User user = new User(5, "User2", "email1@gmail.com", "123", "ADMIN");
         var exception = assertThrows(IntegrityViolation.class, () -> userService.update(user));
         assertEquals("Email já existente: email1@gmail.com", exception.getMessage());
 

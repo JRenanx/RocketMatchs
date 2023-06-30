@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,59 +33,61 @@ public class PlayerResource {
     @Autowired
     private TeamService teamService;
 
+    @Secured({ "ROLE_USER" })
     @GetMapping("/{id}")
     public ResponseEntity<PlayerDTO> findById(@PathVariable Integer id) {
         return ResponseEntity.ok(service.findById(id).toDTO());
     }
 
+    @Secured({ "ROLE_ADMIN" })
     @PostMapping
     public ResponseEntity<PlayerDTO> insert(@RequestBody PlayerDTO playerDTO) {
-        Player player = new Player(playerDTO, teamService.findById(playerDTO.getTeamId()), countryService.findById(playerDTO.getCountryId())); 
+        Player player = new Player(playerDTO, teamService.findById(playerDTO.getTeamId()),
+                countryService.findById(playerDTO.getCountryId()));
         return ResponseEntity.ok(service.insert(player).toDTO());
-        }
+    }
 
+    @Secured({ "ROLE_ADMIN" })
     @PutMapping("/{id}")
     public ResponseEntity<PlayerDTO> update(@PathVariable Integer id, @RequestBody PlayerDTO playerDTO) {
-        Player player = new Player (playerDTO, teamService.findById(playerDTO.getTeamId()), countryService.findById(playerDTO.getCountryId())); 
+        Player player = new Player(playerDTO, teamService.findById(playerDTO.getTeamId()),
+                countryService.findById(playerDTO.getCountryId()));
         player.setId(id);
         return ResponseEntity.ok(service.update(player).toDTO());
     }
-        
-    
 
+    @Secured({ "ROLE_ADMIN" })
     @DeleteMapping
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         service.delete(id);
         return ResponseEntity.ok().build();
     }
 
+    @Secured({ "ROLE_USER" })
     @GetMapping
     ResponseEntity<List<PlayerDTO>> listAll() {
         return ResponseEntity.ok(service.listAll().stream().map(player -> player.toDTO()).toList());
     }
-    
+
+    @Secured({ "ROLE_USER" })
     @GetMapping("/name/{name}")
-    public ResponseEntity<List<PlayerDTO>> findByNameStartsWithIgnoreCase(@PathVariable String name){
-        return ResponseEntity.ok(service.findByNameStartsWithIgnoreCase(name)
-                .stream()
-                .map(pilot -> pilot.toDTO())
-                .toList());
+    public ResponseEntity<List<PlayerDTO>> findByNameStartsWithIgnoreCase(@PathVariable String name) {
+        return ResponseEntity
+                .ok(service.findByNameStartsWithIgnoreCase(name).stream().map(pilot -> pilot.toDTO()).toList());
     }
-    
+
+    @Secured({ "ROLE_USER" })
     @GetMapping("/team/{id}")
-    public ResponseEntity<List<PlayerDTO>> findByTeamOrderByName(@PathVariable Integer id){
-        return ResponseEntity.ok(service.findByTeamOrderByName(teamService.findById(id))
-                .stream()
-                .map(pilot -> pilot.toDTO())
-                .toList());
+    public ResponseEntity<List<PlayerDTO>> findByTeamOrderByName(@PathVariable Integer id) {
+        return ResponseEntity.ok(
+                service.findByTeamOrderByName(teamService.findById(id)).stream().map(pilot -> pilot.toDTO()).toList());
     }
-    
+
+    @Secured({ "ROLE_USER" })
     @GetMapping("/country/{id}")
-    public ResponseEntity<List<PlayerDTO>> findByCountryOrderByName(@PathVariable Integer id){
-        return ResponseEntity.ok(service.findByCountryOrderByName(countryService.findById(id))
-                .stream()
-                .map(pilot -> pilot.toDTO())
-                .toList());
+    public ResponseEntity<List<PlayerDTO>> findByCountryOrderByName(@PathVariable Integer id) {
+        return ResponseEntity.ok(service.findByCountryOrderByName(countryService.findById(id)).stream()
+                .map(pilot -> pilot.toDTO()).toList());
     }
 
 }
